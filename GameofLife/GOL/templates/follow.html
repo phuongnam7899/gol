@@ -1,0 +1,41 @@
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <title>Menu</title>
+</head>
+<body>
+    <div class="title">
+        <span>Game of Life</span>
+        <a href="/logout"><button>Logout</button></a>
+    </div>
+    <div id="menu">
+        <ul>
+            <li><a href="/">Trang chủ</a></li>
+            <li><a href="">Cá nhân</a></li>
+            <li><a href="">Hoạt động</a></li>
+            <li><a href="">Thói quen</a></li>
+            <li><a href="/social">Cộng đồng</a></li>
+            <li><a href="/contribute">Góp ý</a></li>
+        </ul>
+    </div>
+    <div>
+        <form action="" method="POST">  
+        <p>Thêm</p>
+            <label for="">Nhập tên người bạn muốn theo dõi </label>
+            <input type="text" name="add_friend">
+            <button type="submit" >Thêm</button>
+
+        {% if error %}
+        <p><strong>{{ error }}</strong></p>
+        {% endif %}
+        </form>
+    </div>
+    <a href="http://127.0.0.1:5000/social">quay lại</a>
+
+</body>
+</html>

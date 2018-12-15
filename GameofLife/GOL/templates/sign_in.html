@@ -9,11 +9,28 @@
     <title>👍</title>
 </head>
 <body>  
+        <div class="title">
+                <span>Game of Life</span>
+                <a href="http://127.0.0.1:5000/logout"><button>Logout</button></a>
+            </div>
+        <div id="menu">
+                <ul>
+                    <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
+                    <li><a href="/ca-nhan">Cá nhân</a></li>
+                    <li><a href="/hoat-dong">Hoạt động</a></li>
+                    <li><a href="">Thói quen</a></li>
+                    <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
+                    <li><a href="/contribute">Góp ý</a></li>
+                </ul>
+            </div>
     <form action="" method="post"> 
         <p><b>Sign In</b> <a href="/sign_up"><small>No account? Get Started</small></a></p>
         <div><input type="text" placeholder="Username" name="username" class="o_input"></div>
         <div><input type="password" placeholder="Password" name="password" class="o_input"></div>
         <button class="button">Login</button>
+        {% if error %}
+        <strong>{{ error }}</strong>
+        {% endif %}
     </form>
 </body>
 </html>

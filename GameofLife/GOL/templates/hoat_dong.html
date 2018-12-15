@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <title>Document</title>
+</head>
+<body>
+        <div class="title">
+                <span>Game of Life</span>
+                <a href="http://127.0.0.1:5000/logout"><button>Logout</button></a>
+            </div>
+            <div id="menu">
+                <ul>
+                    <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
+                    <li><a href="/ca-nhan">Cá nhân</a></li>
+                    <li><a href="/hoat-dong">Hoạt động</a></li>
+                    <li><a href="">Thói quen</a></li>
+                    <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
+                    <li><a href="/contribute">Góp ý</a></li>
+                </ul>
+            </div>
+            <a href="http://127.0.0.1:5000/sign_in" class="choco_color">Đăng nhập</a>
+            <a href="http://127.0.0.1:5000/sign_up" class="choco_color">Đăng ký</a>
+    <div class = "activities">
+        
+        <form method = "POST">
+                <h3>Hoạt dộng:</h3>
+                        <button name= "st">Thể chất</button>
+                        <button name = "knl">Kiến thức</button>
+                        <button name = "cre">Sáng tạo</button>
+                        <button name = "per">Nhân cách</button>
+                        <button name = "soc">Xã hội</button>
+        </form>
+        <h5>((Hãy click vô hoạt dộng mà bạn đã hoàn thành))</h5>
+
+        {% for a_list in act %}
+            <ul style="list-style: none;">
+                <li>
+                    <form method = "POST">
+                    {% for a in a_list %}
+                        {% if a == "tit"%}
+                        <div >
+                           <button name = "{{ a_list[a] }}" >
+                                {{ a_list[a] }}
+                            </button> 
+                        </div>
+                        {% elif a != "id" and a_list[a] != 0 %}
+                            {{a}}: {{ a_list[a] }};
+                        {% endif %}
+                    {% endfor %}
+                    </form>                   
+                </li>
+            </ul>
+        {% endfor %}
+    </div>
+</body>
+</html>

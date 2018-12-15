@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <title>Document</title>
+</head>
+<body>
+        <div class="title">
+                <span>Game of Life</span>
+                <a href="http://127.0.0.1:5000/logout"><button>Logout</button></a>
+            </div>
+            <div id="menu">
+                <ul>
+                    <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
+                    <li><a href="/ca-nhan">Cá nhân</a></li>
+                    <li><a href="/hoat-dong">Hoạt động</a></li>
+                    <li><a href="">Thói quen</a></li>
+                    <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
+                    <li><a href="/contribute">Góp ý</a></li>
+                </ul>
+            </div>
+            <a href="/edit_information">Thông tin cá nhân</a>
+            <a href="/password1">Bảo mật</a> 
+    <div class = "info"> 
+        <h3> {{ info["username"] }} </h3>
+        <h4>Thông tin cá nhân:</h4>
+
+        Tên: {{ info["fullname"] }}      <br>
+        Email: {{ info["email"] }}       <br>
+    </div>
+    <div class = "thuoc_tinh">
+        <h4> Thuộc tính:</h4>
+
+        Thể chất (STR): {{ att["st"] }}     <br>
+        Kiến thức (KNL): {{ att["knl"] }}   <br>
+        Sáng tạo (CRE): {{ att["cre"] }}    <br>
+        Nhân cách (PER): {{ att["per"] }}   <br>
+        Xã hội (SOC): {{ att["soc"] }}      <br>
+    </div>
+<script>
+function showDiv() {document.getElementById('add_q').style.display = "block";}
+</script>
+    <div class = "quote">
+        <h4>Trích dẫn ưa thích:
+                <button onclick= "showDiv()"> + </button>   
+                <div id="add_q" style="display:none;">
+                    <form method = "POST">
+                        <input type="text" name = "quote" placeholder = "Nhập trích dẫn" required> <br>
+                        <input type="text" name = "author" placeholder = "Nhập tác giả">
+                        <button name = "add_quote">Thêm</button>   
+                    </form>  
+                </div>       
+        </h4>
+
+            {% for q in quotes%}
+                " {{ q["quote"] }} "        <br>
+                ({{ q["author"] }})         <br>
+                <br>
+            {% endfor %}
+    </div>
+    <div class = "lich_su">
+        <h4> Lịch sử hoạt động:  
+                <a href="/hoat-dong">Hoạt động</a> </h4>
+        {% for hstr_list in history %}
+            {% for h in hstr_list %}
+            {% if hstr_list[h] != None%}
+                    {% if h != "id" and h!= "user"%}
+                        {% if h == "tit"%}
+                            {{ hstr_list[h]}}:
+                        {% elif hstr_list[h] != 0 %}
+                             {{ h }}: {{ hstr_list[h] }}; 
+                        {% endif %}
+                    {% endif %}
+            {% endif %}
+            
+            {% endfor %}<br>
+        {% endfor %}
+    </div>
+    
+</body>
+</html>
