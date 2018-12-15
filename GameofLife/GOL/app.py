@@ -152,6 +152,7 @@ def save_share():
         if share == "yes":
             post = Post(img=img,user=session["token"],descript=des)
             post.save()
+        All_history(img=img,user=session["token"],des=des).save()
         return redirect(url_for("home"))
 
 
@@ -303,7 +304,7 @@ def hoat_dong_sx_ttt(sort):
             form = request.form
             act_list = Activities.objects()
             att_list = Attribute.objects(username = user).first()
-            hstr_list = All_history.objects(user = user).first()
+            hstr_list = All_history.objects(user = user).first
 
             toan_bo = form.get("all")
             if toan_bo != None:

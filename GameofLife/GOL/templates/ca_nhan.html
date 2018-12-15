@@ -69,9 +69,11 @@ function showDiv() {document.getElementById('add_q').style.display = "block";}
             {% if hstr_list[h] != None%}
                     {% if h != "id" and h!= "user"%}
                         {% if h == "tit"%}
-                            {{ hstr_list[h]}}:
+                            {{ hstr_list[h]}}
+                        {% elif h == "img" %}
+                        <a href="{{ hstr_list[h] }}"><img src="{{ hstr_list[h] }}" alt="" height="400" width="400"></a>
                         {% elif hstr_list[h] != 0 %}
-                             {{ h }}: {{ hstr_list[h] }}; 
+                             {{ h }}: {{ hstr_list[h] }}
                         {% endif %}
                     {% endif %}
             {% endif %}
