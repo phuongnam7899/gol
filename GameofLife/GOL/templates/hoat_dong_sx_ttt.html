@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <title>Document</title>
 </head>
 <body>
         <div class="title">
                 <span>Game of Life</span>
-                <a href="http://127.0.0.1:5000/logout"><button>Logout</button></a>
+                <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
+                {{ name }}
+                <img src="{{ avt }}" alt="" width="50px" height="50px">
             </div>
             <div id="menu">
                 <ul>
@@ -22,8 +23,6 @@
                     <li><a href="/contribute">Góp ý</a></li>
                 </ul>
             </div>
-            <a href="http://127.0.0.1:5000/sign_in" class="choco_color">Đăng nhập</a>
-            <a href="http://127.0.0.1:5000/sign_up" class="choco_color">Đăng ký</a>
         <div class = "activities">
                 <form method = "POST">
                         <h3>Hoạt dộng:</h3>

@@ -4,28 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <title>Cộng đồng</title>
-</head>
-<body>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
-    <title>Menu</title>
 </head>
 <body>
     <div class="title">
         <span>Game of Life</span>
         <a href="http://127.0.0.1:5000/logout"><button>Logout</button></a>
+        {{ name }}
+        <img src="{{ img }}" alt="" width="50px" height="50px">
     </div>
     <div id="menu">
         <ul>
             <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
-            <li><a href="/ca-nhan">Cá nhân</a></li>
+            <li><a href="/ca_nhan">Cá nhân</a></li>
             <li><a href="/hoat-dong">Hoạt động</a></li>
             <li><a href="">Thói quen</a></li>
             <li><a href="/social">Cộng đồng</a></li>
@@ -39,11 +33,28 @@
         {% for post in posts %}
         <li>
             <p>{{ post["user"] }}</p>
-            <ul>
-                <li>{{ post["tit"] }}</li>
-                <li>{{ post["descript"] }}</li>
-                <li><a href="{{ post['img'] }}"><img src="{{ post['img'] }}" height="400" width="400"></a></li>
-            </ul>
+                <ul>
+                    <li>{{ post["tit"] }}</li>
+                    <li>{{ post["descript"] }}</li>
+                    <a href="{{ post['img'] }}"><img src="{{ post['img'] }}" height="400" width="400"></a><br>
+                    <form action="" method="POST">
+                        <button name="like{{loop.index}}"><i class="em em-heart"></i>{{ post["like"] }}</button>
+                    </form>
+                    <li>{{ post["wholike"] }}</li>
+                    <form action="" method="POST">
+                        <div>
+                            <input type="text" name="comment{{loop.index}}" placeholder="Viết bình luận ..." size="50"> 
+                            <button>Gửi</button>
+                        </div> 
+                    </form>
+                    <ul>
+                        {% for c in post["comments"] %}    
+                        <li>
+                            <strong>{{ c["owner"] }}</strong>  {{ c["contain"] }}   
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </ul>
         </li>
         {% endfor %}
         </ul>

@@ -1,6 +1,7 @@
 from mongoengine import *
 
 class Contribute(Document):
+    user = StringField()
     tit = StringField()
     st = IntField()
     per = IntField()

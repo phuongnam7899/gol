@@ -7,4 +7,5 @@ class User(Document):
     password = StringField()
     birthday = StringField()
     gender = StringField() 
-    phone = StringField() 
+    phone = StringField()
+    avt = StringField() 
