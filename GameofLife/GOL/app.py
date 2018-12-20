@@ -104,12 +104,13 @@ def social():
     posts = Post.objects() 
     # commentss = []
     for post in posts:
-        if post.user in friends:
+        if post.user in friends or post.user == session["token"]:
             friend_post.append(post)
+    print(friend_post)
     # for post in friend_post:
     #     commentss.append(post.comments) 
     if request.method == "GET":
-        return render_template("social.html",posts=friend_post,avt=us.avt) 
+        return render_template("social.html",posts=friend_post,avt=us.avt, name = session["token"]) 
     else:
         form = request.form
         for i in form: 
@@ -118,7 +119,8 @@ def social():
                 if like != None:
                     for j in range(len(friend_post)): 
                         if str(j+1) in i: 
-                            p = friend_post[j] 
+                            p = friend_post[j]
+                            print(p.like) 
                             if session["token"] not in p.wholike:
                                 p.like += 1 
                                 p.wholike.append(session["token"])
@@ -186,7 +188,7 @@ def save_share():
         img = form["image"]
         share = form["share"]
         if share == "yes":
-            post = Post(img=img,user=session["token"],descript=des)
+            post = Post(img=img,user=session["token"],descript=des) 
             post.save()
         All_history(img=img,user=session["token"],des=des).save()
         return redirect(url_for("ca_nhan"))
@@ -274,14 +276,12 @@ def password2():
 
 @app.route("/ca_nhan", methods =["GET", "POST"])
 def ca_nhan():
-    
     if "token" in session:
         user = session["token"]
         info = User.objects(username = user).first()
         att = Attribute.objects(username = user).first()
         hstr_list = All_history.objects(user = user)
         qt_list = Quote.objects(username = user)
-        my_data = {'field1': 'string value', 'field2': 100}
         if request.method == "GET":
             return render_template("ca_nhan.html", info = info, att = att, quotes = qt_list, history = hstr_list,name=user,avt=info.avt)
         else:
@@ -300,72 +300,95 @@ def ca_nhan():
 @app.route("/hoat-dong", methods = ["GET","POST"])
 def hoat_dong():
     if request.method == "GET":
-        user = User.objects(username=session["token"]).first()
         act_list = Activities.objects()
-        return render_template("hoat_dong.html", act = act_list,name = session["token"],avt=user.avt)
+        return render_template("hoat_dong.html", act = act_list,name = session["token"])
     else:
         if "token" in session:
             user = session["token"]
             form = request.form
-            act_list = Activities.objects()
+            print(form)
             att_list = Attribute.objects(username = user).first()
-            hstr_list = All_history.objects(user = user)
-
+            act_list = Activities.objects()
+            
             for att in att_list:
-                sort = form.get(att)
-                if sort != None:
+                if att in form:
                     return redirect("/hoat-dong-sx-ttt-" + att)
-                
+                else:
+                    pass
             for act in act_list:
-                action = form.get(act["tit"])
-                if action != None:
+                act_tit = form.get(act["tit"])
+                if act_tit != None:
+                    hstr_list = All_history.objects(user = user)
+                    des = form["description"]
+                    img = form["image"]
+                    share = form["share"]
                     for att in att_list :
                         if att in act and att != "id":
                             att_list[att] = att_list[att] + act[att]
                             if att_list[att] < 0:
                                 att_list[att] = 0
+                        st = act["st"]
+                        cre = act["cre"]
+                        soc = act["soc"]
+                        knl = act["knl"]
+                        per = act["per"]
+
                     att_list.save()
-                    break                   
-            return redirect("/save_post")
+                    All_history(tit = act["tit"], img=img,user=session["token"], des = des, soc = soc, cre = cre, knl = knl, st = st, per = per ).save()
+                    if share == "yes":
+                        post = Post(tit = act["tit"] ,img = img, user = session["token"], descript = des)
+                        post.save()
+                    break
+            return redirect("/ca_nhan")
+            
         else:
-            return redirect(url_for("sign_in"))
+            return redirect("/sign_in")
 
 @app.route("/hoat-dong-sx-ttt-<sort>", methods = ["GET", "POST"])
 def hoat_dong_sx_ttt(sort):
     if request.method == "GET":
-        user = User.objects(username=session["token"]).first()
         act_list = Activities.objects()
-        return render_template("hoat_dong_sx_ttt.html", act = act_list, sort = sort,name = session["token"],avt=user.avt)
+        return render_template("hoat_dong_sx_ttt.html", act = act_list, sort = sort,name = session["token"])
     else:
-        if "token" in session:
+        if "token" in session:        
             user = session["token"]
             form = request.form
-            act_list = Activities.objects()
             att_list = Attribute.objects(username = user).first()
-            hstr_list = All_history.objects(user = user).first
-
+            act_list = Activities.objects()    
             toan_bo = form.get("all")
+
             if toan_bo != None:
                 return redirect("/hoat-dong")
-
-            for att in att_list:
-                sort = form.get(att)
-                if sort != None:
-                    return redirect("/hoat-dong-sx-ttt-" + att)
                 
-
+            for att in att_list:
+                if att in form:
+                    return redirect("/hoat-dong-sx-ttt-" + att)
+                else:
+                    pass
             for act in act_list:
-                action = form.get(act["tit"])
-                if action != None:
-                    hstr_list.tit.append(act["tit"])
+                act_tit = form.get(act["tit"])
+                if act_tit != None:
+                    hstr_list = All_history.objects(user = user)
+                    des = form["description"]
+                    img = form["image"]
+                    share = form["share"]
                     for att in att_list :
                         if att in act and att != "id":
                             att_list[att] = att_list[att] + act[att]
                             if att_list[att] < 0:
                                 att_list[att] = 0
+                        st = act["st"]
+                        cre = act["cre"]
+                        soc = act["soc"]
+                        knl = act["knl"]
+                        per = act["per"]
+
                     att_list.save()
-                    hstr_list.save()
-                    break                   
+                    All_history(tit = act["tit"], img=img,user=session["token"], des = des, soc = soc, cre = cre, knl = knl, st = st, per = per ).save()
+                    if share == "yes":
+                        post = Post(tit = act["tit"] ,img = img, user = session["token"], descript = des)
+                        post.save()
+                    break
             return render_template("hoat_dong_sx_ttt.html", act = act_list)
         else:
             return redirect(url_for("sign_in"))

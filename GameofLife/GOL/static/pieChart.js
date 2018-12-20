@@ -1,7 +1,7 @@
 
     {/* // var my_js_data = JSON.parse('{"field1": "string value", "field2": 100}'); */}
 let chart = new CanvasJS.Chart("chartContainer",
-{
+{   
     legend: {
         maxWidth: 350,
         itemWidth: 120

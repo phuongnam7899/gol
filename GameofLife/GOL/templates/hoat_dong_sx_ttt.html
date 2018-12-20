@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>👍 Game of Life</title>
 </head>
 <body>
         <div class="title">
                 <span>Game of Life</span>
                 <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
                 {{ name }}
-                <img src="{{ avt }}" alt="" width="50px" height="50px">
+                <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" alt="" width="50px" height="50px">
             </div>
             <div id="menu">
                 <ul>
                     <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
-                    <li><a href="/ca-nhan">Cá nhân</a></li>
+                    <li><a href="/ca_nhan">Cá nhân</a></li>
                     <li><a href="/hoat-dong">Hoạt động</a></li>
                     <li><a href="">Thói quen</a></li>
                     <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
@@ -24,15 +24,15 @@
                 </ul>
             </div>
         <div class = "activities">
-                <form method = "POST">
                         <h3>Hoạt dộng:</h3>
-                        <button name= "st">Thể chất</button>
-                        <button name = "knl">Kiến thức</button>
-                        <button name = "cre">Sáng tạo</button>
-                        <button name = "per">Nhân cách</button>
-                        <button name = "soc">Xã hội</button>
-                        <button name = "all">Hiển thị toàn bộ</button>
-                </form>
+                        <form method = "POST">
+                                <button name= "st">Thể chất</button>
+                                <button name = "knl">Kiến thức</button>
+                                <button name = "cre">Sáng tạo</button>
+                                <button name = "per">Nhân cách</button>
+                                <button name = "soc">Xã hội</button>
+                                <button name = "all">Hiển thị toàn bộ</button>
+                        </form>
                 <h5>((Hãy click vô hoạt dộng mà bạn đã hoàn thành))</h5>
         
                 {% for a_list in act %}
@@ -43,9 +43,27 @@
                                 {% if a_list[sort] != 0 %}
                                         {% if a == "tit"%}
                                         <div >
-                                                <button name = "{{ a_list[a] }}" >
-                                                {{ a_list[a] }}
-                                                </button> 
+                                                        <h3 onclick = "showDiv()" >
+                                                                {{ a_list[a] }}
+                                                        </h3>
+                                                        <script>
+                                                                var K = "{{ loop.index0 }}";
+                                                                function showDiv() {document.getElementById(K).style.display = "block";}
+                                                        </script>
+                                                        <div id = "{{ loop.index0 }}" style = "display:none">
+                                                                <label>Miêu tả</label>
+                                                                <input type="text" name="description">
+                                                                
+                                                                <label>thêm ảnh</label>
+                                                                <input type="url" name="image">
+                                
+                                                                <label>Chia sẻ</label>
+                                                                <input type="radio" name="share" value="yes">Yes
+                                                                <input type="radio" name="share" value="no">No
+                                
+                                                                <button type="submit">Save</button>
+                                                                <input name = "{{ a_list[a] }}" style = "display:none">
+                                                        </div>
                                         </div>
                                         {% elif a != "id" and a_list[a] != 0 %}
                                                 {{a}}: {{ a_list[a] }};

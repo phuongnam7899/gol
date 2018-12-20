@@ -4,17 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js" ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <title>Document</title>
+    <title>👍 Game of Life</title>
 </head>
-<body>
-        <div class="title">
-                <span>Game of Life</span>
-                <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
-                {{ name }}
-                <img src="{{ avt }}" alt="" width="50px" height="50px">
-            </div>
+<body style="background-color:#F7B733">
+        
             <div id="menu">
                 <ul>
                     <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
@@ -25,6 +20,12 @@
                     <li><a href="/contribute">Góp ý</a></li>
                 </ul>
             </div>
+            <div class="title">
+                <span>Game of Life</span>
+                <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
+                {{ name }}
+                <img src="{{ avt }}" alt="" width="50px" height="50px">
+            </div>
             <a href="/edit_information">Thông tin cá nhân</a>
             <a href="/password1">Bảo mật</a> 
     <div class = "info"> 
@@ -34,15 +35,16 @@
         Tên: {{ info["fullname"] }}      <br>
         Email: {{ info["email"] }}       <br>
     </div>
+
     <div class = "thuoc_tinh">
         <h4> Thuộc tính:</h4>
-        <span id="st" value="{{ att.st }}"> Thể chất (STR): {{ att["st"] }} </span>     <br>
-        <span id="knl" value="{{ att.knl }}"> Kiến thức (KNL): {{ att["knl"] }} </span>     <br>
-        <span id="cre" value="{{ att.cre }}"> Sáng tạo (CRE): {{ att["cre"] }} </span>     <br>
-        <span id="per" value="{{ att.per }}"> Nhân cách (PER): {{ att["per"] }} </span>     <br>
-        <span id="soc" value="{{ att.soc }}"> Xã hội (SOC): {{ att["soc"] }} </span>     <br>
+        <span id="st" value="{{ att.st }}"></span>
+        <span id="knl" value="{{ att.knl }}"></span>
+        <span id="cre" value="{{ att.cre }}"></span>
+        <span id="per" value="{{ att.per }}"></span>
+        <span id="soc" value="{{ att.soc }}"></span>
     </div>
-    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    <div id="chartContainer"  style="height: 300px; width: 390px;border:3px solid black"></div>
 
 <script>
 function showDiv() {document.getElementById('add_q').style.display = "block";}
@@ -71,17 +73,22 @@ function showDiv() {document.getElementById('add_q').style.display = "block";}
         {% for hstr_list in history %}
             {% for h in hstr_list %}
             {% if hstr_list[h] != None%}
-                    {% if h != "id" and h!= "user"%}
+                    {% if h != "id" and h!= "user" %}
                         {% if h == "tit"%}
-                            {{ hstr_list[h]}}
+                            Hoạt động: {{ hstr_list[h]}} <br>
+                        {% elif h == "des" %}
+                            {% if  hstr_list[h] != "" %}
+                            Nội dung: {{ hstr_list[h] }} <br>
+                            {% endif %}
                         {% elif h == "img" %}
-                        <a href="{{ hstr_list[h] }}"><img src="{{ hstr_list[h] }}" alt="" height="400" width="400"></a>
+                            {% if  hstr_list[h] != "" %}
+                            <a href="{{ hstr_list[h] }}"><img src="{{ hstr_list[h] }}" alt="" height="400" width="400"></a><br>
+                            {% endif %}
                         {% elif hstr_list[h] != 0 %}
-                             {{ h }}: {{ hstr_list[h] }}
+                             {{ h }}: {{ hstr_list[h] }} <br>
                         {% endif %}
                     {% endif %}
-            {% endif %}
-            
+            {% endif %}           
             {% endfor %}<br>
         {% endfor %}
     </div>

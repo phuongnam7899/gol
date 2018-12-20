@@ -4,33 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>👍</title>
+    <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/sign_in.css">
+    <title>👍 Game of Life</title>
 </head>
 <body>  
-        <div class="title">
-                <span>Game of Life</span>
-                <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
-                {{ name }}
-                <img src="{{ avt }}" alt="" width="50px" height="50px">
-            </div>
-        <div id="menu">
-                <ul>
-                    <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
-                    <li><a href="/ca_nhan">Cá nhân</a></li>
-                    <li><a href="/hoat-dong">Hoạt động</a></li>
-                    <li><a href="">Thói quen</a></li>
-                    <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
-                    <li><a href="/contribute">Góp ý</a></li>
-                </ul>
-            </div>
+    <div class="loginbox">
     <form action="" method="post"> 
-        <p><b>Sign In</b> <a href="/sign_up"><small>Người mới? Đăng kí ngay</small></a></p>
-        <div><input type="text" placeholder="Username" name="username" class="o_input"></div>
-        <div><input type="password" placeholder="Password" name="password" class="o_input"></div>
-        <button class="button">Đăng nhập</button>
+            <h3 class="avatar">Sign in</h3>
+        <div><input type="text" placeholder="Tên đăng nhập" name="username"></div>
+        <div><input type="password" placeholder="Mật khẩu" name="password"></div>
+        <button class="button">Đăng nhập</button><br>
+        <a href="/sign_up"><small>Người mới? Đăng kí ngay</small></a>
         {% if error %}
         <strong>{{ error }}</strong>
         {% endif %}
     </form>
+    </div>
 </body>
 </html>

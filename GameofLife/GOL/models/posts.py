@@ -8,7 +8,7 @@ class Post(Document):
     descript = StringField()
     img = StringField()
     user = StringField()
-    like = IntField()
+    like = IntField(default=0)
     wholike = ListField()
     comments = ListField()
 
