@@ -1,11 +1,11 @@
 from mongoengine import Document,IntField,StringField
 
-class Habbit(Document):
+class Habit(Document):
+    username = StringField()
     tit = StringField()
-    bnf = StringField()
-    streak = IntField(default=0)
+    streak = IntField(default = 0)
     st = IntField()
     knl = IntField()
     cre = IntField()
     per = IntField()
-    soc = IntField()    
+    soc = IntField()

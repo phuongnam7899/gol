@@ -5,92 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js" ></script>
+    <link rel="stylesheet" href="../static/ca_nhan.css">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>👍 Game of Life</title>
 </head>
-<body style="background-color:#F7B733">
-        
-            <div id="menu">
-                <ul>
-                    <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
-                    <li><a href="/ca_nhan">Cá nhân</a></li>
-                    <li><a href="/hoat-dong">Hoạt động</a></li>
-                    <li><a href="">Thói quen</a></li>
-                    <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
-                    <li><a href="/contribute">Góp ý</a></li>
-                </ul>
+<body>
+<div id="head">
+    <div id="title">
+            <span id="name">Game of Life</span>
+            <div id="user">
+                <div id="left">
+                    <div>{{ name }}</div>
+                    <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
+                </div>
+                <div id="right"><img src="{{ avt }}" alt="" width="50px" height="50px"></div>
             </div>
-            <div class="title">
-                <span>Game of Life</span>
-                <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
-                {{ name }}
-                <img src="{{ avt }}" alt="" width="50px" height="50px">
-            </div>
-            <a href="/edit_information">Thông tin cá nhân</a>
-            <a href="/password1">Bảo mật</a> 
-    <div class = "info"> 
-        <h3> {{ info["username"] }} </h3>
-        <h4>Thông tin cá nhân:</h4>
-
-        Tên: {{ info["fullname"] }}      <br>
-        Email: {{ info["email"] }}       <br>
     </div>
-
-    <div class = "thuoc_tinh">
-        <h4> Thuộc tính:</h4>
-        <span id="st" value="{{ att.st }}"></span>
-        <span id="knl" value="{{ att.knl }}"></span>
-        <span id="cre" value="{{ att.cre }}"></span>
-        <span id="per" value="{{ att.per }}"></span>
-        <span id="soc" value="{{ att.soc }}"></span>
+    <div class="p-2" id="menu">
+        <ul>
+            <li><a href="http://127.0.0.1:5000/home">Giới thiệu</a></li>
+            <li><a href="/ca_nhan">Cá nhân</a></li>
+            <li><a href="/hoat-dong">Hoạt động</a></li>
+            <li><a href="/habit">Thói quen</a></li>
+            <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
+            <li><a href="/contribute">Góp ý</a></li>
+        </ul>
     </div>
-    <div id="chartContainer"  style="height: 300px; width: 390px;border:3px solid black"></div>
+    <br>
+    <div id="content" >     
+        <div id = "info"> 
+            <h2> {{ info["username"] }} </h2>
+            <h4>Thông tin cá nhân:</h4>
+            <div>Tên: {{ info["fullname"] }}</div>
+            <div>Giới tính: {{ info["gender"] }}</div>
+            <div>Ngày sinh: {{ info["birthday"] }}</div>
+            <div>Số điện thoại: {{ info["phone"] }}</div>
+            <div>Email: {{ info["email"] }}</div>
+            <a href="/edit_information">Sửa thông tin cá nhân</a>
+            <a href="/password1">Bảo mật</a>
+        </div>
+        <br>
+        <div id = "thuoc_tinh">
+            <h4 style="font-size: 29px"> Thuộc tính:</h4>
+            <span id="st" value="{{ att.st }}" style = "color: blue"></span>
+            <span id="knl" value="{{ att.knl }}" style = "color: red"></span>
+            <span id="cre" value="{{ att.cre }}" style = "color: green"></span>
+            <span id="per" value="{{ att.per }}" style = "color: purple"></span>
+            <span id="soc" value="{{ att.soc }}" style = "color: lightseagreen"></span>
 
-<script>
-function showDiv() {document.getElementById('add_q').style.display = "block";}
-</script>
-    <div class = "quote">
-        <h4>Trích dẫn ưa thích:
-                <button onclick= "showDiv()"> + </button>   
-                <div id="add_q" style="display:none;">
-                    <form method = "POST">
-                        <input type="text" name = "quote" placeholder = "Nhập trích dẫn" required> <br>
-                        <input type="text" name = "author" placeholder = "Nhập tác giả">
-                        <button name = "add_quote">Thêm</button>   
-                    </form>  
-                </div>       
-        </h4>
+        <div id="chartContainer"  style="height: 540px; width: 900px;border:2px solid black;"></div>
+        <script>
+        function showDiv() {document.getElementById('add_q').style.display = "block";}
+        </script>
+        </div>
+        <br>
+        <div id = "quote">
+            <h4 style="font-size: 31px">Trích dẫn ưa thích:
+                    <button onclick= "showDiv()"> + </button>   
+                    <div id="add_q" style="display:none;">
+                        <form method = "POST">
+                            <input type="text" name = "quote" placeholder = "Nhập trích dẫn" required> <br>
+                            <input type="text" name = "author" placeholder = "Nhập tác giả">
+                            <button name = "add_quote">Thêm</button>   
+                        </form>  
+                    </div>       
+            </h4>
 
-            {% for q in quotes%}
-                " {{ q["quote"] }} "        <br>
-                ({{ q["author"] }})         <br>
-                <br>
-            {% endfor %}
-    </div>
-    <div class = "lich_su">
-        <h4> Lịch sử hoạt động:  
-                <a href="/hoat-dong">Hoạt động</a> </h4>
-        {% for hstr_list in history %}
-            {% for h in hstr_list %}
-            {% if hstr_list[h] != None%}
-                    {% if h != "id" and h!= "user" %}
-                        {% if h == "tit"%}
-                            Hoạt động: {{ hstr_list[h]}} <br>
-                        {% elif h == "des" %}
-                            {% if  hstr_list[h] != "" %}
-                            Nội dung: {{ hstr_list[h] }} <br>
+                {% for q in quotes%}
+                    <i>" {{ q["quote"] }} "</i>        <br>
+                    <b>-{{ q["author"] }}-</b>         <br>
+                    <br>
+                {% endfor %}
+        </div>
+        <div id = "history">
+            <h4 style="font-size: 31px"> Lịch sử hoạt động:  
+                    <a href="/hoat-dong">Hoạt động</a> </h4>
+            {% for hstr_list in history %}
+                {% for h in hstr_list %}
+                {% if hstr_list[h] != None%}
+                        {% if h != "id" and h!= "user" %}
+                            {% if h == "tit"%}
+                                Hoạt động: {{ hstr_list[h]}} <br>
+                            {% elif h == "des" %}
+                                {% if  hstr_list[h] != "" %}
+                                Nội dung: {{ hstr_list[h] }} <br>
+                                {% endif %}
+                            {% elif h == "img" %}
+                                {% if  hstr_list[h] != "" %}
+                                <a href="{{ hstr_list[h] }}"><img src="{{ hstr_list[h] }}" alt="" height="550" width="550"></a><br>
+                                {% endif %}
                             {% endif %}
-                        {% elif h == "img" %}
-                            {% if  hstr_list[h] != "" %}
-                            <a href="{{ hstr_list[h] }}"><img src="{{ hstr_list[h] }}" alt="" height="400" width="400"></a><br>
-                            {% endif %}
-                        {% elif hstr_list[h] != 0 %}
-                             {{ h }}: {{ hstr_list[h] }} <br>
                         {% endif %}
-                    {% endif %}
-            {% endif %}           
-            {% endfor %}<br>
-        {% endfor %}
+                {% endif %}           
+                {% endfor %}<br>
+            {% endfor %}
+        </div>
     </div>
     <script>
     
@@ -101,5 +111,9 @@ function showDiv() {document.getElementById('add_q').style.display = "block";}
     let soc = $('#soc').attr('value');
     </script>
     <script src="../static/pieChart.js"></script>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

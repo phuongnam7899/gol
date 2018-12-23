@@ -4,27 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="/templates/favicon (1).ico" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" href="../static/hoat_dong.css">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAATSgAAIVFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIgIREAACIiIiIhEAACIRAAIiEQACIRAAACIRACIhEAAAIhEAIiEQAgAiEQIiIRACIiIRAiIhEAAiIRESIiEQAAAAAAIiIRAAAAAAAiIhEAACIhEQIiERAAAiEQAiIREAACERAAIiERAAIREAACIiIiIhEAAAAiIiIREAD8EAAA8AEAAOHBAADD4QAAg+EAAINhAAADAQAAA4AAAAP/AAAD/wAAA8AAAIHhAACB4QAAwOEAAOADAADwBwAA" rel="icon" type="image/x-icon" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>👍 Game of Life</title>
 </head>
 <body>
-        <div class="title">
-                <span>Game of Life</span>
-                <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
-                {{ name }}
-                <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" alt="" width="50px" height="50px">
-            </div>
-            <div id="menu">
-                <ul>
-                    <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
-                    <li><a href="/ca_nhan">Cá nhân</a></li>
-                    <li><a href="/hoat-dong">Hoạt động</a></li>
-                    <li><a href="">Thói quen</a></li>
-                    <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
-                    <li><a href="/contribute">Góp ý</a></li>
-                </ul>
-            </div>
+        <div id="title">
+                <span id="name">Game of Life</span>
+                <div id="user">
+                    <div id="left">
+                        <div>{{ name }}</div>
+                        <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
+                    </div>
+                    <div id="right"><img src="{{ avt }}" alt="" width="50px" height="50px"></div>
+                </div>
+        </div>
+        <div class="p-2" id="menu">
+            <ul>
+                <li><a href="http://127.0.0.1:5000/home">Giới thiệu</a></li>
+                <li><a href="/ca_nhan">Cá nhân</a></li>
+                <li><a href="/hoat-dong">Hoạt động</a></li>
+                <li><a href="/habit">Thói quen</a></li>
+                <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
+                <li><a href="/contribute">Góp ý</a></li>
+            </ul>
+        </div>
         <div class = "activities">
-                        <h3>Hoạt dộng:</h3>
+            <div id="category-ttt">
                         <form method = "POST">
                                 <button name= "st">Thể chất</button>
                                 <button name = "knl">Kiến thức</button>
@@ -32,48 +41,72 @@
                                 <button name = "per">Nhân cách</button>
                                 <button name = "soc">Xã hội</button>
                                 <button name = "all">Hiển thị toàn bộ</button>
-                        </form>
-                <h5>((Hãy click vô hoạt dộng mà bạn đã hoàn thành))</h5>
-        
-                {% for a_list in act %}
-                        <ul style="list-style: none;">
-                        <li>
-                                <form method = "POST">
-                                {% for a in a_list %}
-                                {% if a_list[sort] != 0 %}
-                                        {% if a == "tit"%}
-                                        <div >
-                                                        <h3 onclick = "showDiv()" >
-                                                                {{ a_list[a] }}
-                                                        </h3>
-                                                        <script>
-                                                                var K = "{{ loop.index0 }}";
-                                                                function showDiv() {document.getElementById(K).style.display = "block";}
-                                                        </script>
-                                                        <div id = "{{ loop.index0 }}" style = "display:none">
-                                                                <label>Miêu tả</label>
-                                                                <input type="text" name="description">
-                                                                
-                                                                <label>thêm ảnh</label>
-                                                                <input type="url" name="image">
-                                
-                                                                <label>Chia sẻ</label>
-                                                                <input type="radio" name="share" value="yes">Yes
-                                                                <input type="radio" name="share" value="no">No
-                                
-                                                                <button type="submit">Save</button>
-                                                                <input name = "{{ a_list[a] }}" style = "display:none">
-                                                        </div>
-                                        </div>
-                                        {% elif a != "id" and a_list[a] != 0 %}
-                                                {{a}}: {{ a_list[a] }};
+                        </form></div>
+        <div id="list">
+                <ul id="list-action" style="list-style: none;">
+                                {% for act in acts %}
+                                    <li id="li{{loop.index}}">
+                                            {% if act[sort] != 0 %} 
+                                                <h3 id="title{{loop.index}}">{{ act.tit }}</h3>
+                                                {% for index in act %}
+                                                {% if loop.index >= 3 %}
+                                                        {% if act[index] != 0 %}
+                                                        {% if index == "st" %}
+                                                        <span style = "color: blue"><strong>STR: {{act[index]}}</strong></span>
+                                                    
+                                                    {% elif index == "knl"%}
+                                                        <span style = "color: red"><strong>KNL: {{act[index]}}</strong></span>
+                    
+                                                    {% elif index == "cre" %}
+                                                        <span style = "color: green"><strong>CRE : {{act[index]}}</strong></span>  
+                    
+                                                    {% elif index == "per" %}
+                                                        <span style = "color: lightseagreen"><strong>PER: {{act[index]}}</strong></span>
+                    
+                                                    {% elif index == "soc" %}
+                                                        <span style = "color: purple"><strong>SOC: {{act[index]}}</strong></span>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <span></span>
+                                                        {% endif %}
+                                                {% endif %}
+                                                {% endfor %}
                                         {% endif %}
-                                {% endif %}
+                                    </li>
                                 {% endfor %}
-                                </form>                   
-                        </li>
-                        </ul>
-                {% endfor %}
-        </div>
+                                </ul>
+                            </div>    
+                            </div>
+                            <script>
+                                let numAction = $('#list-action')[0].children.length;
+                                for (let index = 1; index <= numAction; index++) {
+                                    $(`#title${index}`).on('click', () => {
+                                        if ($(`#li${index}`)[0].children.length === 6) {
+                                            let title = $(`#title${index}`)[0].innerText;
+                                            
+                                            let descForm = `
+                                            <form id="div-${index}" method = "POST">
+                                            <label>Miêu tả</label>
+                                            <input style="display:none" name="${title}"></input>
+                                            <input type="text" name="description">
+                                            
+                                            <label>thêm ảnh</label>
+                                            <input type="url" name="image">
+                        
+                                            <label>Chia sẻ</label>
+                                            <input type="radio" name="share" value="yes">Yes
+                                            <input type="radio" name="share" value="no">No
+                        
+                                            <button type="submit">Save</button>         
+                                            </form> `;
+                                            
+                                            $(`#li${index}`).append(descForm);
+                                                
+                                        } else {
+                                            $(`#div-${index}`).remove('form');
+                                        }
+                                    })            
+                                }
+                            </script>
 </body>
 </html>

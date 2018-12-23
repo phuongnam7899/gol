@@ -2,14 +2,14 @@ from flask import Flask,render_template,request,redirect,session,url_for
 import mlab
 from models.activities import Activities
 from models.friend import Friend
-from models.habbit import Habbit
+from models.habit import Habit
 from models.posts import Post
 from models.user import User
 from models.contribute import Contribute
 from models.attribute import Attribute
 from models.quote import Quote
 from models.all_history import All_history
-import json
+from datetime import *
 
 
 mlab.connect()
@@ -92,8 +92,13 @@ def log_out():
     return redirect(url_for("sign_in"))
 
 @app.route("/")
-def home():
+def welcome():
     return render_template("home.html")
+
+@app.route("/home")
+def home():
+    user =User.objects(username=session["token"]).first()
+    return render_template("introduce.html",avt=user.avt,name=user.fullname)
 
 @app.route("/social",methods=["GET","POST"])  
 def social():
@@ -301,12 +306,11 @@ def ca_nhan():
 def hoat_dong():
     if request.method == "GET":
         act_list = Activities.objects()
-        return render_template("hoat_dong.html", act = act_list,name = session["token"])
+        return render_template("hoat_dong.html", acts = act_list,name = session["token"],avt="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png")
     else:
         if "token" in session:
             user = session["token"]
             form = request.form
-            print(form)
             att_list = Attribute.objects(username = user).first()
             act_list = Activities.objects()
             
@@ -334,7 +338,7 @@ def hoat_dong():
                         per = act["per"]
 
                     att_list.save()
-                    All_history(tit = act["tit"], img=img,user=session["token"], des = des, soc = soc, cre = cre, knl = knl, st = st, per = per ).save()
+                    All_history(tit = act["tit"], img=img,user=session["token"], des = des, soc = soc, cre = cre, knl = knl, st = st, per = per, time = str(datetime.now().strftime("%Y%m%d")) ).save()
                     if share == "yes":
                         post = Post(tit = act["tit"] ,img = img, user = session["token"], descript = des)
                         post.save()
@@ -348,7 +352,7 @@ def hoat_dong():
 def hoat_dong_sx_ttt(sort):
     if request.method == "GET":
         act_list = Activities.objects()
-        return render_template("hoat_dong_sx_ttt.html", act = act_list, sort = sort,name = session["token"])
+        return render_template("hoat_dong_sx_ttt.html", acts = act_list, sort = sort,name = session["token"],avt="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png")
     else:
         if "token" in session:        
             user = session["token"]
@@ -384,15 +388,96 @@ def hoat_dong_sx_ttt(sort):
                         per = act["per"]
 
                     att_list.save()
-                    All_history(tit = act["tit"], img=img,user=session["token"], des = des, soc = soc, cre = cre, knl = knl, st = st, per = per ).save()
+                    All_history(tit = act["tit"], img=img,user=session["token"], des = des, soc = soc, cre = cre, knl = knl, st = st, per = per, time = str(datetime.now().strftime("%Y%m%d"))).save()
                     if share == "yes":
                         post = Post(tit = act["tit"] ,img = img, user = session["token"], descript = des)
                         post.save()
                     break
-            return render_template("hoat_dong_sx_ttt.html", act = act_list)
+            return render_template("hoat_dong_sx_ttt.html", acts = act_list)
         else:
             return redirect(url_for("sign_in"))
-            
+
+@app.route("/habit", methods = ["GET", "POST"])
+def habit():
+        if "token" in session:
+            user = session["token"]
+            habit_list = Habit.objects(username = user)
+            hstr_list = All_history.objects(user = user)
+            act_list = Activities.objects()
+            acts = []
+            habits = []
+            for hstr in hstr_list:
+                if hstr["tit"] not in acts:
+                    acts.append(hstr["tit"])
+                    
+            for habit in habit_list:
+                if habit["tit"] not in habit:
+                    habits.append(habit["tit"])
+
+            for a in acts:
+                act_in_hstr = All_history.objects(user = user, tit = a)
+                combo = 1
+                if a not in habits:
+                    if len(act_in_hstr) >= 3: 
+                        for i in range(len(act_in_hstr) - 1):
+                            if int(act_in_hstr[i+1].time[6:8]) != int(act_in_hstr[i].time[6:8]) + 1:
+                                combo = 0
+                            combo += 1
+                            if i == len(act_in_hstr) - 2:
+                                x_data = Activities.objects(tit = a).first()
+                                soc = x_data["soc"]
+                                per = x_data["per"]
+                                st = x_data["st"]
+                                knl = x_data["knl"]
+                                cre = x_data["cre"]
+                                Habit(username = user, tit = a, streak = combo, soc = soc, per = per, knl = knl, st = st, cre = cre).save()
+                else:
+                    c_habit = Habit.objects(tit = a).first()
+                    if c_habit["streak"] < len(act_in_hstr):
+                        if len(act_in_hstr) >= 3: 
+                            for i in range(len(act_in_hstr) - 1):
+                                if int(act_in_hstr[i+1].time[6:8]) != int(act_in_hstr[i].time[6:8]) + 1:
+                                    combo = 0
+                                combo += 1
+
+                        if combo > c_habit["streak"]:
+                            c_habit["streak"] = combo
+                            c_habit.save()
+
+            if request.method == "GET":
+                habit_list = Habit.objects(username = user)
+                return render_template("habit.html", habits = habit_list)
+            else:
+                att_list = Attribute.objects(username = user).first()
+                form = request.form
+                for act in act_list:
+                    act_tit = form.get(act["tit"])
+
+                    if act_tit != None:
+                        hstr_list = All_history.objects(user = user)
+                        des = form["description"]
+                        img = form["image"]
+                        share = form["share"]
+                        for att in att_list:
+                            if att in act and att != "id":
+                                att_list[att] = att_list[att] + act[att]
+                                if att_list[att] < 0:
+                                    att_list[att] = 0
+                            st = act["st"]
+                            cre = act["cre"]
+                            soc = act["soc"]
+                            knl = act["knl"]
+                            per = act["per"]
+
+                        att_list.save()
+                        All_history(tit = act["tit"], img=img,user=session["token"], des = des, soc = soc, cre = cre, knl = knl, st = st, per = per, time = str(datetime.now().strftime("%Y%m%d")) ).save()
+                        if share == "yes":
+                            post = Post(tit = act["tit"] ,img = img, user = session["token"], descript = des)
+                            post.save()
+                        break
+                return redirect("/ca_nhan")
+        else:
+            return redirect("/sign_in")           
             
 if __name__ == '__main__':
   app.run(debug=True)

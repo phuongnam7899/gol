@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="/templates/favicon (1).ico" rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="../static/hoat_dong.css">
+    <link rel="stylesheet" href="../static/habit.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAATSgAAIVFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIgIREAACIiIiIhEAACIRAAIiEQACIRAAACIRACIhEAAAIhEAIiEQAgAiEQIiIRACIiIRAiIhEAAiIRESIiEQAAAAAAIiIRAAAAAAAiIhEAACIhEQIiERAAAiEQAiIREAACERAAIiERAAIREAACIiIiIhEAAAAiIiIREAD8EAAA8AEAAOHBAADD4QAAg+EAAINhAAADAQAAA4AAAAP/AAAD/wAAA8AAAIHhAACB4QAAwOEAAOADAADwBwAA" rel="icon" type="image/x-icon" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>👍 Game of Life</title>
 </head>
 <body>
@@ -32,54 +32,30 @@
         <li><a href="/contribute">Góp ý</a></li>
     </ul>
 </div>
-    <div class = "activities">
-        <div id="category">
-            <form method = "POST">
-                <button name= "st">Thể chất</button>
-                <button name = "knl">Kiến thức</button>
-                <button name = "cre">Sáng tạo</button>
-                <button name = "per">Nhân cách</button>
-                <button name = "soc">Xã hội</button>
             </form>
-        </div>
-        <div id="list">
-            <ul id="list-action" style="list-style: none;">
-            {% for act in acts %}
-                <li id="li{{loop.index}}">
-                    <h3 id="title{{loop.index}}">{{ act.tit }}</h3>
-                    {% for index in act %}
-                        {% if loop.index >= 3 %}
-                        {% if act[index] != 0 %}
-                        {% if index == "st" %}
-                        <span style = "color: blue"><strong>STR: {{act[index]}}</strong></span>
-                    
-                    {% elif index == "knl"%}
-                        <span style = "color: red"><strong>KNL: {{act[index]}}</strong></span>
-
-                    {% elif index == "cre" %}
-                        <span style = "color: green"><strong>CRE : {{act[index]}}</strong></span>  
-
-                    {% elif index == "per" %}
-                        <span style = "color: lightseagreen"><strong>PER: {{act[index]}}</strong></span>
-
-                    {% elif index == "soc" %}
-                        <span style = "color: purple"><strong>SOC: {{act[index]}}</strong></span>
-                                {% endif %}
-                            {% else %}
-                                <span ></span>
-                            {% endif %}
+    <div class = "activities">
+        <ul id="list-action" style="list-style: none;">
+        {% for habit in habits %}
+            <li id="li{{loop.index}}">
+                <h3 id="title{{loop.index}}">{{ habit.tit }}</h3>
+                Thời gian duy trì thói quen lâu nhất: {{ habit.streak }} ngày liên tiếp <br>
+                {% for index in habit %}
+                    {% if loop.index >= 5 %}
+                        {% if habit[index] != 0 %}
+                            {{index}}: {{habit[index]}}
                         {% endif %}
-                    {% endfor %}
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
+                    {% endif %}
+                {% endfor %}
+            </li>
+        {% endfor %}
+        </ul>
+        
     </div>
     <script>
         let numAction = $('#list-action')[0].children.length;
         for (let index = 1; index <= numAction; index++) {
             $(`#title${index}`).on('click', () => {
-                if ($(`#li${index}`)[0].children.length === 6) {
+                if ($(`#li${index}`)[0].children.length === 2) {
                     let title = $(`#title${index}`)[0].innerText;
                     
                     let descForm = `

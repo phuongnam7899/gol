@@ -4,60 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+    <link rel="stylesheet" href="../static/edit_info.css">
     <!-- <link href="https://fonts.googleapis.com/css?family=Bungee|Exo+2" rel="stylesheet">
     <link rel="stylesheet" href="../static/style.css">  -->
     <title>👍 Game of Life</title>
 </head>
 <body>
-        <div class="title">
-                <span>Game of Life</span>
-                <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
-                {{ name }}
-                <img src="{{ avt }}" alt="" width="50px" height="50px">
-            </div>
-    <form action="" method="post">
-            <div id="menu">
+        <div id="head" >
+                <div id="title">
+                        <span id="name">Game of Life</span>
+                        <div id="user">
+                            <div id="left">
+                                <div>{{ name }}</div>
+                                <a href="http://127.0.0.1:5000/logout"><button>Đăng xuất</button></a>
+                            </div>
+                            <div id="right"><img src="{{ avt }}" alt="" width="50px" height="50px"></div>
+                        </div>
+                </div>
+                <div class="p-2" id="menu">
                     <ul>
-                        <li><a href="http://127.0.0.1:5000/">Trang chủ</a></li>
+                        <li><a href="http://127.0.0.1:5000/home">Giới thiệu</a></li>
                         <li><a href="/ca_nhan">Cá nhân</a></li>
                         <li><a href="/hoat-dong">Hoạt động</a></li>
-                        <li><a href="">Thói quen</a></li>
+                        <li><a href="/habit">Thói quen</a></li>
                         <li><a href="http://127.0.0.1:5000/social">Cộng đồng</a></li>
                         <li><a href="/contribute">Góp ý</a></li>
                     </ul>
                 </div>
-        <h1>Thông tin cá nhân</h1>
+        <h1>Sửa thông tin cá nhân</h1>
+        <div id="form">
+        <form method="POST">
+            <div id="input">
         <div>
-            Tên:
+            <label>Tên</label>
             <input type="text" value="{{ user.fullname }}" name="fullname"> 
         </div>
         <div>
-            Email:
+                <label>Email</label>
             <input type="email" value="{{ user.email }}" name="email">
         </div>
         <div>
-            Điện thoại:
+                <label>Số điện thoại</label>
             <input type="text" value="{{ user.phone }}" name="telephone">
         </div>
         <div>
-            Ngày sinh:
+                <label>Ngày sinh</label>
             <input type="date" value="{{ user.birthday }}" name="bday">
         </div>
         <div>
-            Giới tính:
+                <label>Giới tính</label>
             <select name="gender" value= "{{ user.gender }}"> 
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="Nam">Nam </option>
+                <option value="Nữ">Nữ</option>
+                <option value="Khác">Khác</option>
             </select>
         </div>
         <div>
-            <button class="button">Tiếp tục</button>
+            <button class="button">Xác nhận thay đổi</button>
             {% if error %}
             <strong>{{ error }}</strong>
             {% endif %}
         </div>
+    </div>
     </form>
-    
+    </div>
 </body>
 </html>

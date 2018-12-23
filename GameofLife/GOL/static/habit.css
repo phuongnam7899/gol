@@ -1,0 +1,51 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+
+}
+body {
+    background-image: url("https://images.pexels.com/photos/1615018/pexels-photo-1615018.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+    background-size: 100% 100%;
+}
+#title {
+    display: flex;
+    justify-content: space-between;
+}
+#name {
+    font-size: 6.5em;
+    flex-grow: 4;
+    padding-left: 16%;
+    font-family: 'Amatic SC', cursive;
+    font-weight: 700;
+}
+#title #user {
+    flex-grow: 4;
+    display: flex;
+    padding-right: 10%;
+}
+#title #user #left,#right{
+    align-self: center
+}
+#left a button {
+    font-size:0.7em;
+}
+
+#menu {
+    list-style-type: none;
+    text-align: center
+}
+#menu ul li {
+    height: 5%;
+    width: 11%;
+    margin : 0px;
+    background-color: rgb(171, 216, 255);
+    display:inline-table;
+
+}
+#menu ul li a {
+    font-size: 26px;
+    height: 5%;
+    text-decoration: none;
+    color: blue
+}

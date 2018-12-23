@@ -1,6 +1,6 @@
 import mlab
 from models.activities import Activities
-from models.habbit import Habbit
+from models.habit import Habbit
 
 mlab.connect()
 while True:
@@ -23,6 +23,6 @@ while True:
         cre = int(input("creative? "))
         per = int(input("personality? "))
         soc = int(input("social? "))    
-        habbit = Habbit(tit=tit ,st=st ,knl=knl ,cre= cre,per=per ,soc=soc,bnf=bnf )
+        habbit = Habit(tit=tit ,st=st ,knl=knl ,cre= cre,per=per ,soc=soc,bnf=bnf )
         habbit.save()
         print("habbit added")
