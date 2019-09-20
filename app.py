@@ -53,13 +53,12 @@ def sign_up():
             return render_template("sign_up.html",error=error)
         else :
             m = User(fullname= fullname, username= username, email= email, password= password, birthday= bday, gender= gender, phone= phone ,avt="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png")
-            m.save()  #Save
+            m.save()
             att = Attribute(username = username)
             att.save()             
             hstr_list = All_history(user = username)
             hstr_list.save()
             Friend(username = username).save()
-            
             return redirect("/sign_in")     
 
 
